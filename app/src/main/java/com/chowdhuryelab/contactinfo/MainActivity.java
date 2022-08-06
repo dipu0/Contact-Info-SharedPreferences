@@ -1,5 +1,6 @@
 package com.chowdhuryelab.contactinfo;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,12 +39,25 @@ public class MainActivity extends AppCompatActivity{
     final int bmpWidth = 160;
     static final int CAMERA_CODE = 1;
     static final int GALLERY_CODE = 0;
+
     private CharSequence[] Items = {"Camera", "Gallery", "Remove"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //this.setTitle("Contact Form");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(getLayoutInflater().inflate(R.layout.action_bar_home, null),
+                new ActionBar.LayoutParams(
+                        ActionBar.LayoutParams.WRAP_CONTENT,
+                        ActionBar.LayoutParams.MATCH_PARENT,
+                        Gravity.CENTER
+                )
+        );
 
         SharedPreferences preferences = getSharedPreferences("Quiz2",MODE_PRIVATE);
         userName=(EditText)findViewById(R.id.username);
@@ -133,7 +148,7 @@ public class MainActivity extends AppCompatActivity{
                     startActivityForResult(GalleryIntent,GALLERY_CODE);
                 }
                 else{
-                    userPhoto.setImageResource(R.drawable.ic_launcher_background);
+                    userPhoto.setImageResource(R.drawable.profileimg);
                 }
             }
         });
@@ -224,14 +239,7 @@ public class MainActivity extends AppCompatActivity{
 
 
     public void pressExit(View view) {
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                }).setNegativeButton("No", null).show();
+        finish();
     }
 
 }

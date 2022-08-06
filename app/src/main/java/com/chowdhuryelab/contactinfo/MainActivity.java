@@ -28,17 +28,18 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity{
 
-    EditText userName, userPhone1, userPhone2,userEmail;
-    ImageView userPhoto;
-    Button cln, save;
+    private EditText userName, userPhone1, userPhone2,userEmail;
+    private ImageView userPhoto;
+    private Button cln, save;
 
-    String name, email, phn1,phn2;
+    private String name, email, phn1,phn2;
     private Bitmap thumbnail;
+
+    static final int CAMERA_CODE = 1;
+    static final int GALLERY_CODE = 0;
 
     final int bmpHeight = 160;
     final int bmpWidth = 160;
-    static final int CAMERA_CODE = 1;
-    static final int GALLERY_CODE = 0;
 
     private CharSequence[] Items = {"Camera", "Gallery", "Remove"};
 
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity{
 
         String img_str=preferences.getString("userphoto", "");
 
+        // Chech if photos string is avail able or not
         if (!img_str.equals("")){
             //decode string to image
             String base=img_str;
@@ -99,7 +101,9 @@ public class MainActivity extends AppCompatActivity{
         email = userEmail.getText().toString().trim();
         phn1 = userPhone1.getText().toString().trim();
         phn2 = userPhone2.getText().toString().trim();
+
         String error = "";
+
         if(name.length()<2){
             userName.setError("Error");
             error = error +"\nName";
@@ -111,12 +115,12 @@ public class MainActivity extends AppCompatActivity{
             error = error +"\nEmail";
         }
 
-        if(!isValidMobile(phn1) && phn1.length()<10){
+        if(!isValidMobile(phn1) || phn1.length()<11){
             userPhone1.setError("Error");
             error = error +"\nPhone(Home)";
         }
         if(!phn2.isEmpty()){
-            if(!isValidMobile(phn2) && phn2.length()<10) {
+            if(!isValidMobile(phn2) || phn2.length()<11) {
                 userPhone2.setError("Error");
                 error = error + "\nPhone(Office)";
             }
@@ -164,8 +168,9 @@ public class MainActivity extends AppCompatActivity{
                     Log.i("CameraCode",""+CAMERA_CODE);
                     Bundle bundle = data.getExtras();
                     Bitmap bmp = (Bitmap) bundle.get("data");
-                    Bitmap resized = Bitmap.createScaledBitmap(bmp, bmpWidth,bmpHeight, true);
-                    userPhoto.setImageBitmap(resized);
+                    //Bitmap resized = Bitmap.createScaledBitmap(bmp, bmpWidth,bmpHeight, true);
+                    //userPhoto.setImageBitmap(resized);
+                    userPhoto.setImageBitmap(bmp);
 
                 case 0:
                     Log.i("GalleryCode",""+requestCode);

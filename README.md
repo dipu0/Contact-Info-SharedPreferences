@@ -1,5 +1,5 @@
 
-# Stopwatch - Android(JAVA) Application
+## Contact Info
 
 A single page android java application that uses SharedPreferences to store data and image of user.
 
